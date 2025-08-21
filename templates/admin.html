@@ -1,60 +1,81 @@
 {% extends "layout.html" %}
 {% block title %}
-    Admin Dashboard - S.K Grocery
+Admin Dashboard - S.K Grocery
 {% endblock %}
-{% block content %}
-    <h1>Admin Dashboard</h1>
-    <div class="heading">
-        <h2 class="text-muted">Categories</h2>
-        <a class="btn btn-success" href="{{url_for("add_category")}}">
-            <i class="fas fa-plus fa-xs"></i>
-            Add
-        </a>
-    </div>
-    <table class="table">
-        <thead>
-           <tr>
-            <th>Category ID</th>
-            <th>Category Name</th>
-            <th>Number of Products</th>
-            <th>Actions</th>
-           </tr> 
-        </thead>
-        <tbody>
-            {% for category in categories %}
-                <tr>
-                    <td>{{ category.id }}</td>
-                    <td>{{ category.name }}</td>
-                    <td>{{ category.products|length }}</td>
-                    <td>
-                        <a href="{{url_for('show_category', id=category.id)}}" class="btn btn-outline-success">
-                            <i class="fas fa-search"></i>
-                            Show
-                        </a>
-                        <a class="btn btn-primary" href="{{url_for('edit_category', id=category.id)}}">
-                            <i class="fas fa-edit fa-xs"></i>
-                            Edit
-                        </a>
-                        <a class="btn btn-danger" href="{{ url_for('delete_category', id=category.id) }}">
-                            <i class="fas fa-trash fa-xs"></i>
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
 
-        </tbody>
-    </table>
+{% block content %}
+<div class="container mt-4">
+
+    <div class="text-center mb-4">
+        <h1 class="fw-bold text-success">Admin Dashboard</h1>
+        <p class="text-muted">Manage categories and products easily</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Categories</h5>
+            <a class="btn btn-light btn-sm" href="{{ url_for('add_category') }}">
+                <i class="fas fa-plus"></i> Add Category
+            </a>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th scope="col">Category ID</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Number of Products</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td><span class="badge bg-secondary">{{ category.id }}</span></td>
+                        <td class="fw-semibold">{{ category.name }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">
+                                {{ category.products|length }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ url_for('show_category', id=category.id) }}"
+                                class="btn btn-sm btn-outline-success me-1">
+                                <i class="fas fa-search"></i> Show
+                            </a>
+                            <a href="{{ url_for('edit_category', id=category.id) }}"
+                                class="btn btn-sm btn-primary me-1">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{{ url_for('delete_category', id=category.id) }}" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No categories found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
 {% block style %}
 <style>
-    .heading{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    body {
+        background-color: #f8f9fa;
     }
-    h1,h2{
-        text-align: center;
+
+    .card {
+        border-radius: 1rem;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1fdf6;
     }
 </style>
 {% endblock %}
