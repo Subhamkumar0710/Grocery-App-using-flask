@@ -1,58 +1,57 @@
-<div class="container-fluid" p-4>
-    <form>
-        <select name="parameter" id="parameter" class="form-select">
-            {% for param in parameters %}
-                {% if param== parameter %}
-                    <option value="{{param}}" selected>{{parameter[param]}}</option>
+<div class="container my-4">
+    <form class="row g-2 align-items-center">
+        <!-- Parameter Dropdown -->
+        <div class="col-md-3 col-sm-6">
+            <select name="parameter" id="parameter" class="form-select shadow-sm">
+                {% for param in parameters %}
+                {% if param == parameter %}
+                <option value="{{ param }}" selected>{{ parameters[param] }}</option>
                 {% else %}
-                    <option value="{{param}}">{{parameters[param]}}</option>
-                {% endif %}  
-            {% endfor %}
-        </select>
-        <input type="text" class="form-control" id="query" name="query" placeholder="Search Query" value="{{query}}">
-        <button type="button" class="btn btn-outline-danger clear-button" onclick="clearsearch()">
-            Clear
-        </button>
-        <button type="submit" class="btn btn-outline-primary search-button">
-            <i class="fas fa-search"></i>
-            Search
-        </button>
+                <option value="{{ param }}">{{ parameters[param] }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Search Query -->
+        <div class="col-md-5 col-sm-6">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-light">
+                    <i class="fas fa-search text-secondary"></i>
+                </span>
+                <input type="text" class="form-control" id="query" name="query" placeholder="Search for products..."
+                    value="{{ query }}">
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-md-2 col-sm-6 d-grid">
+            <button type="button" class="btn btn-outline-danger" onclick="clearsearch()">
+                <i class="fas fa-times-circle me-1"></i> Clear
+            </button>
+        </div>
+        <div class="col-md-2 col-sm-6 d-grid">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search me-1"></i> Search
+            </button>
+        </div>
     </form>
 </div>
 
-<style>
-    form {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-
-    #parameter {
-        margin-right: 10px;
-        margin-left: 10px;
-        width: 15%;
-    }
-
-    #search {
-        margin-left: 10px;
-        margin-right: 10px;
-        width: 40%;
-    }
-    .search-button{
-        margin-left: 10px;
-        margin-right: 10px;
-        width: 15%;
-    }
-    .clear-button{
-        margin-left: 10px;
-        width: 15%;
-    }
-
-</style>
 <script>
-    function clearsearch(){
+    function clearsearch() {
         window.location.href = '/';
     }
 </script>
+
+<style>
+    .form-select,
+    .form-control,
+    .btn {
+        border-radius: 10px;
+    }
+
+    .btn {
+        font-weight: 500;
+    }
+</style>

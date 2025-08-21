@@ -1,48 +1,85 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Profile - S.K Grocery
+Profile - S.K Grocery
 {% endblock %}
 
 {% block content %}
-    <h1>Profile
-        <small class="text-muted">(@{{user.username}})</small> 
-    </h1>
-    <hr>
-    <h3>Edit Profile</h3>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh;">
+    <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%; border-radius: 15px;">
+        <div class="card-body">
 
-    <form method="post">
-        <label for="username" class="form-label">Username:
-            <input type="text" name="username" id="username" class="form-control" required value="{{user.username}}">
-        </label>
-         <label for="name" class="form-label">Name:
-            <input type="text" name="name" id="name" class="form-control" required value="{{user.name}}">
-        </label> 
-        <label for="cpassword" class="form-label">Current Password:
-            <input type="password" name="cpassword" id="cpassword" class="form-control" required>
-        </label>
-        <label for="password" class="form-label">New Password:
-            <input type="password" name="password" id="password" class="form-control" required>
-        </label>
-        <input type="submit" value="Save Changes" class="btn btn-success"/>
-        <a href="{{url_for("logout")}}" class="btn btn-outline-danger text-center mt-3" >Logout</a>
-    </form>
-    
-    
 
+            <h2 class="text-center text-success mb-1">
+                <i class="fas fa-user-circle me-2"></i> Profile
+            </h2>
+            <p class="text-center text-muted mb-4">@{{ user.username }}</p>
+            <hr>
+
+
+            <h4 class="text-center text-secondary mb-3">Edit Profile</h4>
+            <form method="post" class="needs-validation" novalidate>
+
+
+                <div class="mb-3">
+                    <label for="username" class="form-label fw-semibold">Username</label>
+                    <input type="text" name="username" id="username" class="form-control shadow-sm" required
+                        value="{{ user.username }}">
+                    <div class="invalid-feedback">Please enter a username.</div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-semibold">Full Name</label>
+                    <input type="text" name="name" id="name" class="form-control shadow-sm" required
+                        value="{{ user.name }}">
+                    <div class="invalid-feedback">Please enter your name.</div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="cpassword" class="form-label fw-semibold">Current Password</label>
+                    <input type="password" name="cpassword" id="cpassword" class="form-control shadow-sm" required
+                        placeholder="Enter current password">
+                </div>
+
+
+                <div class="mb-4">
+                    <label for="password" class="form-label fw-semibold">New Password</label>
+                    <input type="password" name="password" id="password" class="form-control shadow-sm" required
+                        placeholder="Enter new password">
+                </div>
+
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-success py-2">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+                <div class="d-grid">
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger py-2">
+                        <i class="fas fa-sign-out-alt me-1"></i> Logout
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block style %}
 <style>
-    form{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    body {
+        background: linear-gradient(135deg, #d4fc79, #96e6a1);
     }
 
-    h1,h2,h3 {
-        text-align: center;
+    .form-control {
+        border-radius: 10px;
+    }
+
+    .btn {
+        border-radius: 10px;
+        font-weight: 500;
     }
 </style>
 {% endblock %}
-

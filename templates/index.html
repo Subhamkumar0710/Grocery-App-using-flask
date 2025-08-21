@@ -7,151 +7,55 @@ Home - Groceri
 {% block content %}
 {% include 'searchbar.html' with context %}
 
-<div class="categories-list">
+<div class="container my-5">
     {% for category in categories %}
-    <div class="category">
-        <h3>{{ category.name }}</h3>
-        <div class="product_list">
-            {% for product in category.products %}
-            {% if (price and product.price <= price ) or (name and name.lower() in product.name.lower()) or (not price and not name) %}
-                <div class="product">
-                <div class="product-info">
-                    <h4>{{ product.name }}</h4>
-                    <p>&#8377;{{ product.price }}</p>
-                    <p>Available:{{product.quantity}}</p>
-                </div>
-                <div class="add-to-cart">
-                    <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST"
-                        class="product-quantity">
-                        <label for="quantity">Quantity:</label>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1"
-                            max="{{ product.quantity }}" required>
-                        <button type="submit">
-                            <i class="fas fa-cart-plus"></i>
-                            Add to Cart
-                        </button>
-                    </form>
-                </div>
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">{{ category.name }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row g-4">
+                {% for product in category.products %}
+                {% if (price and product.price <= price ) or (name and name.lower() in product.name.lower()) or (not
+                    price and not name) %} <div class="col-md-3 col-sm-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-dark">{{ product.name }}</h5>
+                            <p class="card-text text-muted mb-1">₹{{ product.price }}</p>
+                            <p class="small text-success mb-3">Available: {{ product.quantity }}</p>
+
+                            <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST"
+                                class="mt-auto">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="quantity" value="1" min="1"
+                                        max="{{ product.quantity }}" required>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-cart-plus me-1"></i> Add
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
             </div>
             {% endif %}
             {% endfor %}
+        </div>
     </div>
 </div>
 {% endfor %}
-
 </div>
 
 {% endblock %}
+
 {% block style %}
 <style>
-    /* Reset some basic styles */
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f6f8;
-        color: #333;
+        background-color: #f8f9fa;
     }
 
-    .categories-list {
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        padding: 40px 60px;
-    }
-
-    .category {
-        background-color: #ffffff;
-        padding: 20px 25px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .category h3 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #2c3e50;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 5px;
-    }
-
-    .product_list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .product {
-        background-color: #fafafa;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        width: 220px;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: box-shadow 0.3s ease;
-    }
-
-    .product:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .product-info h4 {
-        margin: 0;
-        font-size: 18px;
-        color: #34495e;
-    }
-
-    .product-info p {
-        margin: 5px 0;
-        font-size: 14px;
-    }
-
-    .add-to-cart {
-        margin-top: auto;
-    }
-
-    .product-quantity {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .product-quantity label {
-        font-size: 14px;
-        color: #555;
-    }
-
-    .product-quantity input[type="number"] {
-        padding: 6px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .product-quantity button {
-        background-color: #27ae60;
-        color: white;
-        padding: 8px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        transition: background-color 0.3s ease;
-    }
-
-    .product-quantity button:hover {
-        background-color: #219150;
-    }
-
-    .product-quantity i.fas.fa-cart-plus {
-        font-size: 16px;
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
     }
 </style>
 {% endblock %}
