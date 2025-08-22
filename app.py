@@ -29,6 +29,9 @@ class User(db.Model):
     passhash = db.Column(db.String(512), nullable=False)
     name = db.Column(db.String(64), nullable=True)
     is_admin = db.Column(db.Boolean, nullable = False, default = False)
+
+    carts = db.relationship('Cart', backref='user', lazy=True, cascade="all, delete-orphan")
+    transactions = db.relationship('Transaction', backref='user', lazy=True, cascade="all, delete-orphan")
     
     def cheak_password(self, password):
         return check_password_hash(self.passhash, password)
@@ -39,44 +42,41 @@ class Product(db.Model):
     __tablename__ = 'product'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id', ondelete='CASCADE'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     man_date = db.Column(db.Date, nullable=False)
 
-
-    carts = db.relationship('Cart', backref='product', lazy=True)
-    orders = db.relationship('Order', backref='product', lazy=True)
+    carts = db.relationship('Cart', backref='product', lazy=True, cascade="all, delete-orphan")
+    orders = db.relationship('Order', backref='product', lazy=True, cascade="all, delete-orphan")
 
 class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     
-    products = db.relationship('Product', backref='category', lazy=True)
+    products = db.relationship('Product', backref='category', lazy=True, cascade="all, delete-orphan")
 
 class Cart(db.Model):
     __tablename__ = 'cart'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete='CASCADE'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     datetime = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     total = db.Column(db.Float, nullable=False)
 
-    orders = db.relationship('Order', backref='transaction', lazy=True)
-
-
+    orders = db.relationship('Order', backref='transaction', lazy=True, cascade="all, delete-orphan")
 
 class Order(db.Model):
     __tablename__ = 'order'
     id = db.Column(db.Integer, primary_key=True)
-    transaction_id = db.Column(db.Integer, db.ForeignKey('transaction.id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    transaction_id = db.Column(db.Integer, db.ForeignKey('transaction.id', ondelete='CASCADE'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete='CASCADE'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     
